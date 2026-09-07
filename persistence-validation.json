@@ -1,0 +1,168 @@
+{
+  "initial_size": 48,
+  "native_roles_initial": 17,
+  "checks": [
+    {
+      "role": "Arrow",
+      "size": 48,
+      "hotspot": [
+        9,
+        9
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "Help",
+      "size": 48,
+      "hotspot": [
+        9,
+        9
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "AppStarting",
+      "size": 48,
+      "hotspot": [
+        9,
+        9
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "Wait",
+      "size": 48,
+      "hotspot": [
+        24,
+        24
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "Crosshair",
+      "size": 48,
+      "hotspot": [
+        24,
+        24
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "IBeam",
+      "size": 48,
+      "hotspot": [
+        24,
+        24
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "NWPen",
+      "size": 48,
+      "hotspot": [
+        11,
+        37
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "No",
+      "size": 48,
+      "hotspot": [
+        24,
+        24
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "SizeNS",
+      "size": 48,
+      "hotspot": [
+        24,
+        24
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "SizeWE",
+      "size": 48,
+      "hotspot": [
+        24,
+        24
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "SizeNWSE",
+      "size": 48,
+      "hotspot": [
+        24,
+        24
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "SizeNESW",
+      "size": 48,
+      "hotspot": [
+        24,
+        24
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "SizeAll",
+      "size": 48,
+      "hotspot": [
+        24,
+        24
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "UpArrow",
+      "size": 48,
+      "hotspot": [
+        24,
+        8
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "Hand",
+      "size": 48,
+      "hotspot": [
+        18,
+        8
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "Pin",
+      "size": 48,
+      "hotspot": [
+        18,
+        8
+      ],
+      "native_pixel_match": true
+    },
+    {
+      "role": "Person",
+      "size": 48,
+      "hotspot": [
+        18,
+        8
+      ],
+      "native_pixel_match": true
+    }
+  ],
+  "size_style_reset_recovery": {
+    "passed": true,
+    "size": 64,
+    "native_roles": 17,
+    "reason": "cursor registry changed"
+  },
+  "native_roles_after_size_restore": 17,
+  "original_size_restored": true,
+  "actual_reboot_tested": false
+}

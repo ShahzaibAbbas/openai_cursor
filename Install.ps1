@@ -1,250 +1,286 @@
 #requires -version 5.1
 <#
 .SYNOPSIS
-Installs all 17 Soft Black Arrow v3 cursor roles for the current Windows user.
+Installs the persistent Soft Black Arrow scheme for the current Windows user.
 .DESCRIPTION
-Run normally for the subtle animated pointer, or with -Static for a still pointer.
-Wait and Working in Background remain animated in both modes. The first backup is
-retained across reinstalls. Restore.ps1 returns the exact values from that backup.
-No administrator rights are needed. Mouse speed, trails and other settings are untouched.
+Copies all cursor files and the small event-driven helper into a permanent folder.
+The first registry backup is preserved across reinstalls. The -Restore switch is
+used by Restore.ps1. Current cursor size, base size, and color are never changed.
 #>
 [CmdletBinding()]
-param([switch]$Static, [switch]$Restore)
+param([switch]$Restore)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
-if ($Static -and $Restore) { throw 'Choose either installation with -Static, or -Restore.' }
-
-$schemeName = 'Soft Black Arrow v3'
-$registryPath = 'Control Panel\Cursors'
-$installRoot = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'CustomCursors\SoftBlackArrowV3'
-$backupPath = Join-Path $installRoot 'previous-scheme.json'
-$roleNames = @('Arrow', 'Help', 'AppStarting', 'Wait', 'Crosshair', 'IBeam', 'NWPen', 'No', 'SizeNS', 'SizeWE', 'SizeNWSE', 'SizeNESW', 'SizeAll', 'UpArrow', 'Hand', 'Pin', 'Person')
-$valueNames = @($roleNames) + @('', 'Scheme Source')
+$schemeName = 'Soft Black Arrow Persistent'
+$runName = 'SoftBlackArrowCursorKeeper'
+$runPath = 'Software\Microsoft\Windows\CurrentVersion\Run'
+$installRoot = [IO.Path]::GetFullPath((Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'CustomCursors\SoftBlackArrowPermanent'))
+$helperPath = Join-Path $installRoot 'CursorKeeper.exe'
+$backupPath = Join-Path $installRoot 'original-state.clixml'
 $sid = [Security.Principal.WindowsIdentity]::GetCurrent().User.Value
+$roleNames = @('Arrow', 'Help', 'AppStarting', 'Wait', 'Crosshair', 'IBeam', 'NWPen', 'No', 'SizeNS', 'SizeWE', 'SizeNWSE', 'SizeNESW', 'SizeAll', 'UpArrow', 'Hand', 'Pin', 'Person')
+$targets = @(
+    foreach ($name in ($roleNames + @('', 'Scheme Source'))) {
+        [pscustomobject]@{ Path = 'Control Panel\Cursors'; Name = $name }
+    }
+    [pscustomobject]@{ Path = 'Control Panel\Cursors\Schemes'; Name = $schemeName }
+    [pscustomobject]@{ Path = 'Software\Microsoft\Windows\CurrentVersion\Themes'; Name = 'ThemeChangesMousePointers' }
+    [pscustomobject]@{ Path = 'Software\Microsoft\Accessibility'; Name = 'CursorType' }
+    [pscustomobject]@{ Path = $runPath; Name = $runName }
+)
 
-if (-not ('SoftBlackArrowV3.Native' -as [type])) {
-    Add-Type -TypeDefinition @'
+function Get-RegistrySnapshot {
+    $records = foreach ($target in $targets) {
+        $key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($target.Path, $false)
+        try {
+            $exists = ($null -ne $key) -and (@($key.GetValueNames()) -contains $target.Name)
+            $kind = $null
+            $raw = $null
+            if ($exists) {
+                $kind = $key.GetValueKind($target.Name).ToString()
+                $raw = $key.GetValue($target.Name, $null, [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
+                if ($kind -in @('Binary', 'None')) { $raw = [Convert]::ToBase64String([byte[]]$raw) }
+                elseif ($kind -in @('DWord', 'QWord')) { $raw = $raw.ToString([Globalization.CultureInfo]::InvariantCulture) }
+            }
+            [pscustomobject]@{ Path = $target.Path; Name = $target.Name; Exists = $exists; Kind = $kind; Value = $raw }
+        }
+        finally { if ($null -ne $key) { $key.Dispose() } }
+    }
+    [pscustomobject]@{
+        Format = 'SoftBlackArrowPersistent.RegistryBackup.v1'
+        UserSid = $sid
+        SavedUtc = [DateTime]::UtcNow.ToString('o')
+        Records = @($records)
+    }
+}
+
+function Assert-Snapshot {
+    param($Snapshot)
+    if ($Snapshot.Format -ne 'SoftBlackArrowPersistent.RegistryBackup.v1' -or $Snapshot.UserSid -ne $sid) {
+        throw 'This cursor backup is not valid for the current Windows user.'
+    }
+    if (@($Snapshot.Records).Count -ne $targets.Count) { throw 'The cursor backup contains an unexpected number of values.' }
+    foreach ($target in $targets) {
+        $matches = @($Snapshot.Records | Where-Object { $_.Path -ceq $target.Path -and $_.Name -ceq $target.Name })
+        if ($matches.Count -ne 1) { throw ('Missing or duplicated backup value: ' + $target.Path + '\' + $target.Name) }
+        $record = $matches[0]
+        if ($record.Exists -isnot [bool]) { throw 'Invalid backup existence flag.' }
+        if ($record.Exists -and $record.Kind -notin @('String', 'ExpandString', 'MultiString', 'Binary', 'None', 'DWord', 'QWord')) {
+            throw 'Unsupported registry type in the cursor backup.'
+        }
+        if ($record.Exists) {
+            switch ($record.Kind) {
+                'Binary' { [void][Convert]::FromBase64String([string]$record.Value) }
+                'None' { [void][Convert]::FromBase64String([string]$record.Value) }
+                'DWord' { [void][int]::Parse([string]$record.Value, [Globalization.CultureInfo]::InvariantCulture) }
+                'QWord' { [void][long]::Parse([string]$record.Value, [Globalization.CultureInfo]::InvariantCulture) }
+            }
+        }
+    }
+}
+
+function Set-RegistrySnapshot {
+    param($Snapshot)
+    Assert-Snapshot $Snapshot
+    foreach ($record in $Snapshot.Records) {
+        if (-not $record.Exists) {
+            $key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey([string]$record.Path, $true)
+            try { if ($null -ne $key) { $key.DeleteValue([string]$record.Name, $false) } }
+            finally { if ($null -ne $key) { $key.Dispose() } }
+            continue
+        }
+        $key = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey([string]$record.Path)
+        try {
+            $kind = [Microsoft.Win32.RegistryValueKind][Enum]::Parse([Microsoft.Win32.RegistryValueKind], [string]$record.Kind)
+            $raw = $record.Value
+            switch ([string]$record.Kind) {
+                'String' { $raw = [string]$raw }
+                'ExpandString' { $raw = [string]$raw }
+                'MultiString' { $raw = [string[]]@($raw) }
+                'Binary' { $raw = [Convert]::FromBase64String([string]$raw) }
+                'None' { $raw = [Convert]::FromBase64String([string]$raw) }
+                'DWord' { $raw = [int]::Parse([string]$raw, [Globalization.CultureInfo]::InvariantCulture) }
+                'QWord' { $raw = [long]::Parse([string]$raw, [Globalization.CultureInfo]::InvariantCulture) }
+            }
+            $key.SetValue([string]$record.Name, $raw, $kind)
+            $key.Flush()
+        }
+        finally { $key.Dispose() }
+    }
+}
+
+function Assert-SnapshotApplied {
+    param($Expected)
+    $actual = Get-RegistrySnapshot
+    for ($index = 0; $index -lt $targets.Count; $index++) {
+        $target = $targets[$index]
+        $wanted = $Expected.Records | Where-Object { $_.Path -ceq $target.Path -and $_.Name -ceq $target.Name }
+        $found = $actual.Records[$index]
+        if (($wanted | ConvertTo-Json -Depth 6 -Compress) -cne ($found | ConvertTo-Json -Depth 6 -Compress)) {
+            throw ('Registry verification failed: ' + $target.Path + '\' + $target.Name)
+        }
+    }
+}
+
+function Reload-Cursors {
+    if (-not ('SoftBlackArrowPersistent.ControlNative' -as [type])) {
+        Add-Type -TypeDefinition @'
 using System;
 using System.Runtime.InteropServices;
-namespace SoftBlackArrowV3 {
-    public static class Native {
-        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr LoadImage(IntPtr instance, string fileName, uint imageType, int width, int height, uint flags);
-        [DllImport("user32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool DestroyCursor(IntPtr cursor);
+namespace SoftBlackArrowPersistent {
+    public static class ControlNative {
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SystemParametersInfo(uint action, uint parameter, IntPtr value, uint flags);
     }
 }
 '@
-}
-
-function Read-RegistryValue {
-    param([Microsoft.Win32.RegistryKey]$Key, [string]$Name)
-    $exists = ($null -ne $Key) -and (@($Key.GetValueNames()) -contains $Name)
-    if (-not $exists) {
-        return [pscustomobject]@{ Name = $Name; Exists = $false; Kind = $null; Value = $null }
     }
-    $kind = $Key.GetValueKind($Name).ToString()
-    $raw = $Key.GetValue($Name, $null, [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
-    # Base64 and decimal strings preserve binary data and 64-bit integer precision in JSON.
-    if ($kind -eq 'Binary' -or $kind -eq 'None') { $raw = [Convert]::ToBase64String([byte[]]$raw) }
-    elseif ($kind -eq 'DWord' -or $kind -eq 'QWord') { $raw = $raw.ToString([Globalization.CultureInfo]::InvariantCulture) }
-    return [pscustomobject]@{ Name = $Name; Exists = $true; Kind = $kind; Value = $raw }
+    if (-not [SoftBlackArrowPersistent.ControlNative]::SystemParametersInfo(0x57, 0, [IntPtr]::Zero, 2)) {
+        throw ('Windows could not reload the cursor scheme; error ' + [Runtime.InteropServices.Marshal]::GetLastWin32Error())
+    }
 }
 
-function Get-CursorSnapshot {
-    $cursorKey = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($registryPath, $false)
-    $schemesKey = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey(($registryPath + '\Schemes'), $false)
+function Get-InstalledHelperProcesses {
+    foreach ($process in [Diagnostics.Process]::GetProcessesByName('CursorKeeper')) {
+        try {
+            if ([IO.Path]::GetFullPath($process.MainModule.FileName) -ieq $helperPath) { $process }
+            else { $process.Dispose() }
+        }
+        catch { $process.Dispose() }
+    }
+}
+
+function Stop-InstalledHelper {
+    if ([IO.File]::Exists($helperPath)) {
+        $signal = Start-Process -FilePath $helperPath -ArgumentList '--stop' -WindowStyle Hidden -PassThru
+        try {
+            if (-not $signal.WaitForExit(10000)) { throw 'The cursor helper did not finish its stop request.' }
+            if ($signal.ExitCode -ne 0) { throw ('The cursor helper stop request failed: ' + $signal.ExitCode) }
+        }
+        finally { $signal.Dispose() }
+    }
+    foreach ($process in @(Get-InstalledHelperProcesses)) {
+        try { if (-not $process.WaitForExit(10000)) { throw 'The installed cursor helper is still running; files were not replaced.' } }
+        finally { $process.Dispose() }
+    }
+}
+
+function Start-InstalledHelper {
+    $process = Start-Process -FilePath $helperPath -WindowStyle Hidden -PassThru
     try {
-        $values = foreach ($name in $valueNames) { Read-RegistryValue -Key $cursorKey -Name $name }
-        return [pscustomobject]@{
-            Format = 'SoftBlackArrowV3.RegistryBackup.v1'
-            UserSid = $sid
-            SavedUtc = [DateTime]::UtcNow.ToString('o')
-            Values = @($values)
-            NamedScheme = Read-RegistryValue -Key $schemesKey -Name $schemeName
-        }
+        if ($process.WaitForExit(1500)) { throw ('The cursor protection helper exited early: ' + $process.ExitCode) }
     }
-    finally {
-        if ($null -ne $cursorKey) { $cursorKey.Dispose() }
-        if ($null -ne $schemesKey) { $schemesKey.Dispose() }
-    }
+    finally { $process.Dispose() }
 }
 
-function Assert-Snapshot {
-    param($Snapshot)
-    if ($Snapshot.Format -ne 'SoftBlackArrowV3.RegistryBackup.v1' -or $Snapshot.UserSid -ne $sid) {
-        throw 'The cursor backup is not valid for this Windows user.'
-    }
-    if (@($Snapshot.Values).Count -ne $valueNames.Count -or $Snapshot.NamedScheme.Name -ne $schemeName) {
-        throw 'The cursor backup has an unexpected set of registry values.'
-    }
-    foreach ($name in $valueNames) {
-        if (@($Snapshot.Values | Where-Object { $_.Name -ceq $name }).Count -ne 1) {
-            throw ('Missing or duplicated cursor backup value: ' + $name)
-        }
-    }
-    foreach ($record in (@($Snapshot.Values) + @($Snapshot.NamedScheme))) {
-        if ($record.Exists -isnot [bool]) { throw 'The cursor backup contains an invalid existence flag.' }
-        if ($record.Exists -and $record.Kind -notin @('String', 'ExpandString', 'Binary', 'DWord', 'MultiString', 'QWord', 'None')) {
-            throw 'The cursor backup contains an unsupported registry type.'
-        }
-    }
-}
+$operationMutex = [Threading.Mutex]::new($false, ('Local\SoftBlackArrowPersistent.Install.' + $sid))
+$mutexTaken = $false
+try {
+    try { $mutexTaken = $operationMutex.WaitOne(0) }
+    catch [Threading.AbandonedMutexException] { $mutexTaken = $true }
+    if (-not $mutexTaken) { throw 'Another Soft Black Arrow install or restore is already running.' }
 
-function Write-RegistryRecord {
-    param([Microsoft.Win32.RegistryKey]$Key, $Record)
-    if (-not $Record.Exists) { $Key.DeleteValue([string]$Record.Name, $false); return }
-    $kind = [Microsoft.Win32.RegistryValueKind][Enum]::Parse([Microsoft.Win32.RegistryValueKind], [string]$Record.Kind)
-    $raw = $Record.Value
-    switch ([string]$Record.Kind) {
-        'String' { $raw = [string]$raw }
-        'ExpandString' { $raw = [string]$raw }
-        'MultiString' { $raw = [string[]]@($raw) }
-        'Binary' { $raw = [Convert]::FromBase64String([string]$raw) }
-        'None' { $raw = [Convert]::FromBase64String([string]$raw) }
-        'DWord' { $raw = [int]::Parse([string]$raw, [Globalization.CultureInfo]::InvariantCulture) }
-        'QWord' { $raw = [long]::Parse([string]$raw, [Globalization.CultureInfo]::InvariantCulture) }
-    }
-    $Key.SetValue([string]$Record.Name, $raw, $kind)
-}
-
-function Set-CursorSnapshot {
-    param($Snapshot)
-    Assert-Snapshot $Snapshot
-    $cursorKey = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey($registryPath)
-    $schemesKey = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey(($registryPath + '\Schemes'))
-    try {
-        foreach ($record in $Snapshot.Values) { Write-RegistryRecord -Key $cursorKey -Record $record }
-        Write-RegistryRecord -Key $schemesKey -Record $Snapshot.NamedScheme
-        $cursorKey.Flush()
-        $schemesKey.Flush()
-    }
-    finally { $cursorKey.Dispose(); $schemesKey.Dispose() }
-}
-
-function Reload-Cursors {
-    if (-not [SoftBlackArrowV3.Native]::SystemParametersInfo(0x57, 0, [IntPtr]::Zero, 2)) {
-        $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
-        throw ('Windows could not reload the cursor scheme. Win32 error: ' + $errorCode)
-    }
-}
-
-function Assert-SnapshotApplied {
-    param($Expected)
-    $actual = Get-CursorSnapshot
-    foreach ($name in $valueNames) {
-        $wanted = $Expected.Values | Where-Object { $_.Name -ceq $name }
-        $found = $actual.Values | Where-Object { $_.Name -ceq $name }
-        if (($wanted | ConvertTo-Json -Depth 6 -Compress) -cne ($found | ConvertTo-Json -Depth 6 -Compress)) {
-            throw ('Registry verification failed for cursor value: ' + $name)
-        }
-    }
-    if (($Expected.NamedScheme | ConvertTo-Json -Depth 6 -Compress) -cne ($actual.NamedScheme | ConvertTo-Json -Depth 6 -Compress)) {
-        throw 'Registry verification failed for the saved scheme entry.'
-    }
-}
-
-function Test-CursorFile {
-    param([string]$Path)
-    if (-not [IO.File]::Exists($Path)) { throw ('Required cursor file is missing: ' + $Path) }
-    $cursorHandle = [SoftBlackArrowV3.Native]::LoadImage([IntPtr]::Zero, $Path, 2, 0, 0, 0x10)
-    if ($cursorHandle -eq [IntPtr]::Zero) {
-        $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
-        throw ('Windows rejected cursor file: ' + $Path + ' (Win32 error ' + $errorCode + ')')
-    }
-    [void][SoftBlackArrowV3.Native]::DestroyCursor($cursorHandle)
-}
-
-if ($Restore) {
-    if (-not [IO.File]::Exists($backupPath)) { throw ('No previous cursor backup was found: ' + $backupPath) }
-    $targetSnapshot = Get-Content -LiteralPath $backupPath -Raw | ConvertFrom-Json
-    Assert-Snapshot $targetSnapshot
-}
-else {
-    $fileNames = [ordered]@{}
-    foreach ($role in $roleNames) { $fileNames[$role] = $role + '.cur' }
-    $fileNames['Wait'] = 'Wait.ani'
-    $fileNames['AppStarting'] = 'AppStarting.ani'
-    if (-not $Static) { $fileNames['Arrow'] = 'Arrow.ani' }
-    $requiredFiles = @(@($fileNames.Values) + @('Arrow.cur', 'Arrow.ani') | Select-Object -Unique)
-    foreach ($file in $requiredFiles) { Test-CursorFile (Join-Path $PSScriptRoot $file) }
-
-    [void][IO.Directory]::CreateDirectory($installRoot)
-    if ([IO.File]::Exists($backupPath)) {
-        $savedBackup = Get-Content -LiteralPath $backupPath -Raw | ConvertFrom-Json
-        Assert-Snapshot $savedBackup
+    if ($Restore) {
+        if (-not [IO.File]::Exists($backupPath)) { throw ('No original cursor backup exists at ' + $backupPath) }
+        $savedSnapshot = Import-Clixml -LiteralPath $backupPath
+        Assert-Snapshot $savedSnapshot
     }
     else {
-        $firstSnapshot = Get-CursorSnapshot
-        $jsonBytes = [Text.UTF8Encoding]::new($false).GetBytes(($firstSnapshot | ConvertTo-Json -Depth 8))
-        # CreateNew prevents an existing backup from being overwritten.
-        $stream = [IO.File]::Open($backupPath, [IO.FileMode]::CreateNew, [IO.FileAccess]::Write, [IO.FileShare]::None)
-        try { $stream.Write($jsonBytes, 0, $jsonBytes.Length); $stream.Flush() }
-        finally { $stream.Dispose() }
-    }
-
-    # Each install gets fresh files, so a failed reinstall cannot damage active assets.
-    $generation = 'assets-' + [DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss') + '-' + [Guid]::NewGuid().ToString('N').Substring(0, 8)
-    $assetRoot = Join-Path $installRoot $generation
-    [void][IO.Directory]::CreateDirectory($assetRoot)
-    foreach ($file in $requiredFiles) {
-        $sourcePath = Join-Path $PSScriptRoot $file
-        $destinationPath = Join-Path $assetRoot $file
-        [IO.File]::Copy($sourcePath, $destinationPath, $false)
-        if ((Get-FileHash -LiteralPath $sourcePath -Algorithm SHA256).Hash -ne (Get-FileHash -LiteralPath $destinationPath -Algorithm SHA256).Hash) {
-            throw ('Copied cursor verification failed: ' + $file)
+        $cursorFiles = @(
+            foreach ($role in $roleNames) {
+                if ($role -in @('Arrow', 'Wait', 'AppStarting')) { $role + '.ani' }
+                else { $role + '.cur' }
+            }
+            'Arrow.cur'
+        )
+        $requiredFiles = @($cursorFiles) + @('CursorKeeper.exe', 'Install.ps1', 'Restore.ps1', 'Stop-Protection.ps1')
+        foreach ($file in $requiredFiles) {
+            $source = Join-Path $PSScriptRoot $file
+            if (-not [IO.File]::Exists($source) -or (Get-Item -LiteralPath $source).Length -eq 0) {
+                throw ('Missing or empty package file: ' + $source)
+            }
         }
-        Test-CursorFile $destinationPath
-    }
-    foreach ($scriptName in @('Install.ps1', 'Restore.ps1')) {
-        $sourceScript = Join-Path $PSScriptRoot $scriptName
-        $destinationScript = Join-Path $installRoot $scriptName
-        if ([IO.Path]::GetFullPath($sourceScript) -ine [IO.Path]::GetFullPath($destinationScript)) {
-            [IO.File]::Copy($sourceScript, $destinationScript, $true)
+        [void][IO.Directory]::CreateDirectory($installRoot)
+        if ([IO.File]::Exists($backupPath)) {
+            Assert-Snapshot (Import-Clixml -LiteralPath $backupPath)
+        }
+        else {
+            $original = Get-RegistrySnapshot
+            $bytes = [Text.UTF8Encoding]::new($false).GetBytes([Management.Automation.PSSerializer]::Serialize($original, 8))
+            $stream = [IO.File]::Open($backupPath, [IO.FileMode]::CreateNew, [IO.FileAccess]::Write, [IO.FileShare]::None)
+            try { $stream.Write($bytes, 0, $bytes.Length); $stream.Flush() }
+            finally { $stream.Dispose() }
+            Assert-Snapshot (Import-Clixml -LiteralPath $backupPath)
         }
     }
 
-    $targetSnapshot = Get-CursorSnapshot
-    $paths = foreach ($role in $roleNames) { Join-Path $assetRoot $fileNames[$role] }
-    $newValues = for ($index = 0; $index -lt $roleNames.Count; $index++) {
-        [pscustomobject]@{ Name = $roleNames[$index]; Exists = $true; Kind = 'ExpandString'; Value = $paths[$index] }
-    }
-    $newValues += [pscustomobject]@{ Name = ''; Exists = $true; Kind = 'String'; Value = $schemeName }
-    $newValues += [pscustomobject]@{ Name = 'Scheme Source'; Exists = $true; Kind = 'DWord'; Value = '1' }
-    $targetSnapshot.Values = @($newValues)
-    $targetSnapshot.NamedScheme = [pscustomobject]@{ Name = $schemeName; Exists = $true; Kind = 'String'; Value = ($paths -join ',') }
-}
-
-$beforeChange = Get-CursorSnapshot
-try {
-    Set-CursorSnapshot $targetSnapshot
-    Assert-SnapshotApplied $targetSnapshot
-    Reload-Cursors
-}
-catch {
-    $originalFailure = $_.Exception.Message
+    $beforeChange = Get-RegistrySnapshot
+    $runningBefore = @(Get-InstalledHelperProcesses)
+    $wasRunning = $runningBefore.Count -gt 0
+    foreach ($process in $runningBefore) { $process.Dispose() }
     try {
-        Set-CursorSnapshot $beforeChange
-        Assert-SnapshotApplied $beforeChange
-        Reload-Cursors
+        Stop-InstalledHelper
+        if ($Restore) {
+            Set-RegistrySnapshot $savedSnapshot
+            Assert-SnapshotApplied $savedSnapshot
+            Reload-Cursors
+            Write-Host 'Original cursor scheme and startup preferences restored. Your current cursor size was preserved.'
+            Write-Host ('Cursor files and the original backup are retained in ' + $installRoot)
+        }
+        else {
+            $copyFiles = @($requiredFiles)
+            foreach ($optional in @('CursorKeeper.cs', 'README.txt', 'README.md', 'scheme-preview.png', 'effects-preview.gif', 'cursor-manifest.json')) {
+                if ([IO.File]::Exists((Join-Path $PSScriptRoot $optional))) { $copyFiles += $optional }
+            }
+            foreach ($file in $copyFiles) {
+                $source = Join-Path $PSScriptRoot $file
+                $destination = Join-Path $installRoot $file
+                if ([IO.Path]::GetFullPath($source) -ine [IO.Path]::GetFullPath($destination)) {
+                    [IO.File]::Copy($source, $destination, $true)
+                }
+                if ((Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash -ne (Get-FileHash -LiteralPath $destination -Algorithm SHA256).Hash) {
+                    throw ('Copied file verification failed: ' + $file)
+                }
+            }
+            $runKey = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey($runPath)
+            try { $runKey.SetValue($runName, ('"' + $helperPath + '"'), [Microsoft.Win32.RegistryValueKind]::String); $runKey.Flush() }
+            finally { $runKey.Dispose() }
+            $apply = Start-Process -FilePath $helperPath -ArgumentList '--apply' -WindowStyle Hidden -PassThru
+            try {
+                if (-not $apply.WaitForExit(30000)) {
+                    # This is the one-shot process launched by this installation.
+                    # End it before rollback so a late write cannot undo recovery.
+                    $apply.Kill()
+                    [void]$apply.WaitForExit(5000)
+                    throw 'Applying the permanent cursor scheme timed out.'
+                }
+                if ($apply.ExitCode -ne 0) { throw ('Applying the permanent cursor scheme failed, exit code ' + $apply.ExitCode + '. See keeper.log in ' + $installRoot) }
+            }
+            finally { $apply.Dispose() }
+            Start-InstalledHelper
+            Write-Host 'Soft Black Arrow Persistent is installed, applied, and protected at sign-in and after size changes.'
+            Write-Host ('Permanent cursor folder: ' + $installRoot)
+            Write-Host ('Original backup: ' + $backupPath)
+        }
     }
     catch {
-        throw ('Cursor change failed: ' + $originalFailure + '. Rollback also reported: ' + $_.Exception.Message + '. Backup retained at ' + $backupPath)
+        $failure = $_.Exception.Message
+        try {
+            Stop-InstalledHelper
+            Set-RegistrySnapshot $beforeChange
+            Assert-SnapshotApplied $beforeChange
+            Reload-Cursors
+            if ($wasRunning) { Start-InstalledHelper }
+        }
+        catch {
+            throw ('Cursor operation failed: ' + $failure + '. Rollback also reported: ' + $_.Exception.Message + '. Backup retained at ' + $backupPath)
+        }
+        throw ('Cursor operation failed; the prior registry state was restored. ' + $failure)
     }
-    throw ('Cursor change failed and the previous state was restored: ' + $originalFailure)
 }
-
-if ($Restore) {
-    Write-Host 'Previous cursor scheme restored. Backup and cursor assets were retained.'
-}
-else {
-    $pointerStyle = if ($Static) { 'static pointer' } else { 'animated pointer' }
-    Write-Host ($schemeName + ' installed and active for all 17 roles (' + $pointerStyle + ').')
-    Write-Host ('Assets: ' + $assetRoot)
-    Write-Host ('Restore: ' + (Join-Path $installRoot 'Restore.ps1'))
+finally {
+    if ($mutexTaken) { $operationMutex.ReleaseMutex() }
+    $operationMutex.Dispose()
 }
