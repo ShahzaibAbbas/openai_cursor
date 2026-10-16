@@ -1,0 +1,11 @@
+# Build output from tools/Build.ps1
+.build/
+
+# Local Claude Code preview settings
+.claude/
+
+# Written by CursorKeeper.exe when it runs from this folder
+keeper.log
+keeper.ini
+keeper.ini.tmp
+state.json

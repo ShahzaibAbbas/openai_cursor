@@ -1,5 +1,5 @@
 {
-  "name": "Soft Black Arrow v3",
+  "name": "Soft Black Arrow v4",
   "sizes": [
     32,
     40,
@@ -597,9 +597,29 @@
     }
   },
   "effects": {
-    "Arrow": "48-frame, 3.2-second soft blue glow pulse",
+    "Arrow": "48-step, 3.2-second soft blue glow pulse",
     "Wait": "36-frame, 1.2-second rotating blue highlight",
-    "AppStarting": "Same rotating highlight beside stationary arrow"
+    "AppStarting": "Same rotating highlight beside stationary arrow",
+    "Help": "3.2-second glow pulse in step with Arrow; the ? badge tilts curiously at the peak",
+    "Hand": "3.2-second soft glow pulse in step with Arrow",
+    "Pin": "Glow pulse; the location pin hops and lands at the peak",
+    "Person": "Glow pulse; the person badge lights up like a presence ping at the peak",
+    "No": "0.6-second damped shake, then rests for the remainder of a 3.2-second cycle"
   },
-  "encoding": "32-bit straight BGRA DIB + AND mask, Windows loader premultiplies"
+  "styles": {
+    "Lively": {
+      "default": true,
+      "animated": ["Arrow", "Wait", "AppStarting", "Help", "Hand", "Pin", "Person", "No"]
+    },
+    "Classic": {
+      "animated": ["Arrow", "Wait", "AppStarting"]
+    },
+    "Static": {
+      "animated": []
+    }
+  },
+  "neverAnimated": ["Crosshair", "IBeam", "NWPen", "SizeNS", "SizeWE", "SizeNWSE", "SizeNESW", "SizeAll", "UpArrow"],
+  "encoding": "32-bit straight BGRA DIB + AND mask, Windows loader premultiplies",
+  "animationEncoding": "RIFF ACON; identical frames stored once and replayed through seq/rate step tables (AF_SEQUENCE)",
+  "generator": "tools/Build.ps1 (CursorForge) derives Help, Hand, Pin, Person and No .ani from the static .cur artwork; Arrow, Wait and AppStarting are the v3 animations, losslessly repacked"
 }

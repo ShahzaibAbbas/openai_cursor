@@ -1,2880 +1,107 @@
 {
   "result": "passed",
-  "static_render_checks": 204,
-  "animated_sizes_checked": 18,
-  "records": [
+  "method": "Each file loaded with LoadImage(LR_LOADFROMFILE) at every stored size, every animation step drawn with DrawIconEx over white and #1A222E, compared with the stored straight-alpha pixels. Hotspots from GetIconInfo; step counts and rates from GetCursorFrameInfo. No system cursor was changed.",
+  "windowsRenders": 3444,
+  "styles": {
+    "Lively": [
+      "Arrow.ani",
+      "Help.ani",
+      "AppStarting.ani",
+      "Wait.ani",
+      "Crosshair.cur",
+      "IBeam.cur",
+      "NWPen.cur",
+      "No.ani",
+      "SizeNS.cur",
+      "SizeWE.cur",
+      "SizeNWSE.cur",
+      "SizeNESW.cur",
+      "SizeAll.cur",
+      "UpArrow.cur",
+      "Hand.ani",
+      "Pin.ani",
+      "Person.ani"
+    ],
+    "Classic": [
+      "Arrow.ani",
+      "Help.cur",
+      "AppStarting.ani",
+      "Wait.ani",
+      "Crosshair.cur",
+      "IBeam.cur",
+      "NWPen.cur",
+      "No.cur",
+      "SizeNS.cur",
+      "SizeWE.cur",
+      "SizeNWSE.cur",
+      "SizeNESW.cur",
+      "SizeAll.cur",
+      "UpArrow.cur",
+      "Hand.cur",
+      "Pin.cur",
+      "Person.cur"
+    ],
+    "Static": [
+      "Arrow.cur",
+      "Help.cur",
+      "AppStarting.cur",
+      "Wait.cur",
+      "Crosshair.cur",
+      "IBeam.cur",
+      "NWPen.cur",
+      "No.cur",
+      "SizeNS.cur",
+      "SizeWE.cur",
+      "SizeNWSE.cur",
+      "SizeNESW.cur",
+      "SizeAll.cur",
+      "UpArrow.cur",
+      "Hand.cur",
+      "Pin.cur",
+      "Person.cur"
+    ]
+  },
+  "files": [
     {
       "file": "Arrow.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        6,
-        6
-      ],
-      "mean_rgb_error": 0.161
-    },
-    {
-      "file": "Arrow.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        6,
-        6
-      ],
-      "mean_rgb_error": 0.15
-    },
-    {
-      "file": "Arrow.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        8,
-        8
-      ],
-      "mean_rgb_error": 0.154
-    },
-    {
-      "file": "Arrow.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        8,
-        8
-      ],
-      "mean_rgb_error": 0.147
-    },
-    {
-      "file": "Arrow.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        9,
-        9
-      ],
-      "mean_rgb_error": 0.151
-    },
-    {
-      "file": "Arrow.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        9,
-        9
-      ],
-      "mean_rgb_error": 0.144
-    },
-    {
-      "file": "Arrow.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        12,
-        12
-      ],
-      "mean_rgb_error": 0.147
-    },
-    {
-      "file": "Arrow.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        12,
-        12
-      ],
-      "mean_rgb_error": 0.14
-    },
-    {
-      "file": "Arrow.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        18,
-        18
-      ],
-      "mean_rgb_error": 0.146
-    },
-    {
-      "file": "Arrow.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        18,
-        18
-      ],
-      "mean_rgb_error": 0.142
-    },
-    {
-      "file": "Arrow.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.145
-    },
-    {
-      "file": "Arrow.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.145
-    },
-    {
-      "file": "Help.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        6,
-        6
-      ],
-      "mean_rgb_error": 0.226
-    },
-    {
-      "file": "Help.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        6,
-        6
-      ],
-      "mean_rgb_error": 0.214
-    },
-    {
-      "file": "Help.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        8,
-        8
-      ],
-      "mean_rgb_error": 0.215
-    },
-    {
-      "file": "Help.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        8,
-        8
-      ],
-      "mean_rgb_error": 0.208
-    },
-    {
-      "file": "Help.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        9,
-        9
-      ],
-      "mean_rgb_error": 0.212
-    },
-    {
-      "file": "Help.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        9,
-        9
-      ],
-      "mean_rgb_error": 0.205
-    },
-    {
-      "file": "Help.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        12,
-        12
-      ],
-      "mean_rgb_error": 0.212
-    },
-    {
-      "file": "Help.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        12,
-        12
-      ],
-      "mean_rgb_error": 0.202
-    },
-    {
-      "file": "Help.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        18,
-        18
-      ],
-      "mean_rgb_error": 0.213
-    },
-    {
-      "file": "Help.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        18,
-        18
-      ],
-      "mean_rgb_error": 0.207
-    },
-    {
-      "file": "Help.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.213
-    },
-    {
-      "file": "Help.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.212
-    },
-    {
-      "file": "AppStarting.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        6,
-        6
-      ],
-      "mean_rgb_error": 0.238
-    },
-    {
-      "file": "AppStarting.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        6,
-        6
-      ],
-      "mean_rgb_error": 0.225
-    },
-    {
-      "file": "AppStarting.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        8,
-        8
-      ],
-      "mean_rgb_error": 0.238
-    },
-    {
-      "file": "AppStarting.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        8,
-        8
-      ],
-      "mean_rgb_error": 0.225
-    },
-    {
-      "file": "AppStarting.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        9,
-        9
-      ],
-      "mean_rgb_error": 0.236
-    },
-    {
-      "file": "AppStarting.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        9,
-        9
-      ],
-      "mean_rgb_error": 0.225
-    },
-    {
-      "file": "AppStarting.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        12,
-        12
-      ],
-      "mean_rgb_error": 0.239
-    },
-    {
-      "file": "AppStarting.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        12,
-        12
-      ],
-      "mean_rgb_error": 0.228
-    },
-    {
-      "file": "AppStarting.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        18,
-        18
-      ],
-      "mean_rgb_error": 0.235
-    },
-    {
-      "file": "AppStarting.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        18,
-        18
-      ],
-      "mean_rgb_error": 0.23
-    },
-    {
-      "file": "AppStarting.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.237
-    },
-    {
-      "file": "AppStarting.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.237
-    },
-    {
-      "file": "Wait.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.193
-    },
-    {
-      "file": "Wait.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.185
-    },
-    {
-      "file": "Wait.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.204
-    },
-    {
-      "file": "Wait.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.195
-    },
-    {
-      "file": "Wait.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.212
-    },
-    {
-      "file": "Wait.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.204
-    },
-    {
-      "file": "Wait.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
+      "sha256": "32d7dc5e524456237377d22eeb6afaeec35ca679dc196c3d1b6481b726dceaf0",
+      "bytes": 143382,
+      "sizes": [
         32,
-        32
-      ],
-      "mean_rgb_error": 0.226
-    },
-    {
-      "file": "Wait.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.228
-    },
-    {
-      "file": "Wait.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
+        40,
         48,
-        48
-      ],
-      "mean_rgb_error": 0.209
-    },
-    {
-      "file": "Wait.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.208
-    },
-    {
-      "file": "Wait.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
         64,
-        64
-      ],
-      "mean_rgb_error": 0.215
-    },
-    {
-      "file": "Wait.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.212
-    },
-    {
-      "file": "Crosshair.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.134
-    },
-    {
-      "file": "Crosshair.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.129
-    },
-    {
-      "file": "Crosshair.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.171
-    },
-    {
-      "file": "Crosshair.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.164
-    },
-    {
-      "file": "Crosshair.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.23
-    },
-    {
-      "file": "Crosshair.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.218
-    },
-    {
-      "file": "Crosshair.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.197
-    },
-    {
-      "file": "Crosshair.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.184
-    },
-    {
-      "file": "Crosshair.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.205
-    },
-    {
-      "file": "Crosshair.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.209
-    },
-    {
-      "file": "Crosshair.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.206
-    },
-    {
-      "file": "Crosshair.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.202
-    },
-    {
-      "file": "IBeam.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.135
-    },
-    {
-      "file": "IBeam.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.125
-    },
-    {
-      "file": "IBeam.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.134
-    },
-    {
-      "file": "IBeam.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.134
-    },
-    {
-      "file": "IBeam.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.172
-    },
-    {
-      "file": "IBeam.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.17
-    },
-    {
-      "file": "IBeam.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.157
-    },
-    {
-      "file": "IBeam.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.149
-    },
-    {
-      "file": "IBeam.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.153
-    },
-    {
-      "file": "IBeam.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.151
-    },
-    {
-      "file": "IBeam.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.161
-    },
-    {
-      "file": "IBeam.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.161
-    },
-    {
-      "file": "NWPen.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        7,
-        24
-      ],
-      "mean_rgb_error": 0.141
-    },
-    {
-      "file": "NWPen.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        7,
-        24
-      ],
-      "mean_rgb_error": 0.13
-    },
-    {
-      "file": "NWPen.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        9,
-        30
-      ],
-      "mean_rgb_error": 0.133
-    },
-    {
-      "file": "NWPen.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        9,
-        30
-      ],
-      "mean_rgb_error": 0.131
-    },
-    {
-      "file": "NWPen.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        11,
-        37
-      ],
-      "mean_rgb_error": 0.135
-    },
-    {
-      "file": "NWPen.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        11,
-        37
-      ],
-      "mean_rgb_error": 0.132
-    },
-    {
-      "file": "NWPen.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        14,
-        49
-      ],
-      "mean_rgb_error": 0.132
-    },
-    {
-      "file": "NWPen.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        14,
-        49
-      ],
-      "mean_rgb_error": 0.128
-    },
-    {
-      "file": "NWPen.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        21,
-        75
-      ],
-      "mean_rgb_error": 0.135
-    },
-    {
-      "file": "NWPen.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        21,
-        75
-      ],
-      "mean_rgb_error": 0.133
-    },
-    {
-      "file": "NWPen.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        28,
-        100
-      ],
-      "mean_rgb_error": 0.139
-    },
-    {
-      "file": "NWPen.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        28,
-        100
-      ],
-      "mean_rgb_error": 0.137
-    },
-    {
-      "file": "No.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.211
-    },
-    {
-      "file": "No.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.2
-    },
-    {
-      "file": "No.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.254
-    },
-    {
-      "file": "No.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.239
-    },
-    {
-      "file": "No.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.261
-    },
-    {
-      "file": "No.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.252
-    },
-    {
-      "file": "No.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.244
-    },
-    {
-      "file": "No.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.233
-    },
-    {
-      "file": "No.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.243
-    },
-    {
-      "file": "No.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.243
-    },
-    {
-      "file": "No.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.24
-    },
-    {
-      "file": "No.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.237
-    },
-    {
-      "file": "SizeNS.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.114
-    },
-    {
-      "file": "SizeNS.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.104
-    },
-    {
-      "file": "SizeNS.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.112
-    },
-    {
-      "file": "SizeNS.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.109
-    },
-    {
-      "file": "SizeNS.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.116
-    },
-    {
-      "file": "SizeNS.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.112
-    },
-    {
-      "file": "SizeNS.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.128
-    },
-    {
-      "file": "SizeNS.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.119
-    },
-    {
-      "file": "SizeNS.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.126
-    },
-    {
-      "file": "SizeNS.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.122
-    },
-    {
-      "file": "SizeNS.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.13
-    },
-    {
-      "file": "SizeNS.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.127
-    },
-    {
-      "file": "SizeWE.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.109
-    },
-    {
-      "file": "SizeWE.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.099
-    },
-    {
-      "file": "SizeWE.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.108
-    },
-    {
-      "file": "SizeWE.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.104
-    },
-    {
-      "file": "SizeWE.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.123
-    },
-    {
-      "file": "SizeWE.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.115
-    },
-    {
-      "file": "SizeWE.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.126
-    },
-    {
-      "file": "SizeWE.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.121
-    },
-    {
-      "file": "SizeWE.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.13
-    },
-    {
-      "file": "SizeWE.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.127
-    },
-    {
-      "file": "SizeWE.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.13
-    },
-    {
-      "file": "SizeWE.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.127
-    },
-    {
-      "file": "SizeNWSE.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.097
-    },
-    {
-      "file": "SizeNWSE.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.094
-    },
-    {
-      "file": "SizeNWSE.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.129
-    },
-    {
-      "file": "SizeNWSE.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.125
-    },
-    {
-      "file": "SizeNWSE.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.133
-    },
-    {
-      "file": "SizeNWSE.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.128
-    },
-    {
-      "file": "SizeNWSE.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.124
-    },
-    {
-      "file": "SizeNWSE.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.119
-    },
-    {
-      "file": "SizeNWSE.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.133
-    },
-    {
-      "file": "SizeNWSE.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.129
-    },
-    {
-      "file": "SizeNWSE.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.13
-    },
-    {
-      "file": "SizeNWSE.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.127
-    },
-    {
-      "file": "SizeNESW.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.112
-    },
-    {
-      "file": "SizeNESW.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.108
-    },
-    {
-      "file": "SizeNESW.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.129
-    },
-    {
-      "file": "SizeNESW.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.122
-    },
-    {
-      "file": "SizeNESW.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.134
-    },
-    {
-      "file": "SizeNESW.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.129
-    },
-    {
-      "file": "SizeNESW.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.127
-    },
-    {
-      "file": "SizeNESW.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.125
-    },
-    {
-      "file": "SizeNESW.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.129
-    },
-    {
-      "file": "SizeNESW.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.129
-    },
-    {
-      "file": "SizeNESW.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.131
-    },
-    {
-      "file": "SizeNESW.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.129
-    },
-    {
-      "file": "SizeAll.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.186
-    },
-    {
-      "file": "SizeAll.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        16,
-        16
-      ],
-      "mean_rgb_error": 0.173
-    },
-    {
-      "file": "SizeAll.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.196
-    },
-    {
-      "file": "SizeAll.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        20,
-        20
-      ],
-      "mean_rgb_error": 0.189
-    },
-    {
-      "file": "SizeAll.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.197
-    },
-    {
-      "file": "SizeAll.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        24
-      ],
-      "mean_rgb_error": 0.189
-    },
-    {
-      "file": "SizeAll.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.205
-    },
-    {
-      "file": "SizeAll.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        32,
-        32
-      ],
-      "mean_rgb_error": 0.199
-    },
-    {
-      "file": "SizeAll.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.206
-    },
-    {
-      "file": "SizeAll.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        48,
-        48
-      ],
-      "mean_rgb_error": 0.2
-    },
-    {
-      "file": "SizeAll.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.197
-    },
-    {
-      "file": "SizeAll.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        64,
-        64
-      ],
-      "mean_rgb_error": 0.195
-    },
-    {
-      "file": "UpArrow.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        16,
-        5
-      ],
-      "mean_rgb_error": 0.168
-    },
-    {
-      "file": "UpArrow.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        16,
-        5
-      ],
-      "mean_rgb_error": 0.154
-    },
-    {
-      "file": "UpArrow.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        20,
-        6
-      ],
-      "mean_rgb_error": 0.122
-    },
-    {
-      "file": "UpArrow.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        20,
-        6
-      ],
-      "mean_rgb_error": 0.113
-    },
-    {
-      "file": "UpArrow.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        8
-      ],
-      "mean_rgb_error": 0.141
-    },
-    {
-      "file": "UpArrow.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        8
-      ],
-      "mean_rgb_error": 0.137
-    },
-    {
-      "file": "UpArrow.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        32,
-        10
-      ],
-      "mean_rgb_error": 0.13
-    },
-    {
-      "file": "UpArrow.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        32,
-        10
-      ],
-      "mean_rgb_error": 0.122
-    },
-    {
-      "file": "UpArrow.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        48,
-        15
-      ],
-      "mean_rgb_error": 0.128
-    },
-    {
-      "file": "UpArrow.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        48,
-        15
-      ],
-      "mean_rgb_error": 0.124
-    },
-    {
-      "file": "UpArrow.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        64,
-        20
-      ],
-      "mean_rgb_error": 0.134
-    },
-    {
-      "file": "UpArrow.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        64,
-        20
-      ],
-      "mean_rgb_error": 0.132
-    },
-    {
-      "file": "Hand.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        12,
-        5
-      ],
-      "mean_rgb_error": 0.174
-    },
-    {
-      "file": "Hand.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        12,
-        5
-      ],
-      "mean_rgb_error": 0.167
-    },
-    {
-      "file": "Hand.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        15,
-        6
-      ],
-      "mean_rgb_error": 0.159
-    },
-    {
-      "file": "Hand.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        15,
-        6
-      ],
-      "mean_rgb_error": 0.152
-    },
-    {
-      "file": "Hand.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        18,
-        8
-      ],
-      "mean_rgb_error": 0.163
-    },
-    {
-      "file": "Hand.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        18,
-        8
-      ],
-      "mean_rgb_error": 0.157
-    },
-    {
-      "file": "Hand.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        10
-      ],
-      "mean_rgb_error": 0.152
-    },
-    {
-      "file": "Hand.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        10
-      ],
-      "mean_rgb_error": 0.15
-    },
-    {
-      "file": "Hand.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        36,
-        15
-      ],
-      "mean_rgb_error": 0.154
-    },
-    {
-      "file": "Hand.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        36,
-        15
-      ],
-      "mean_rgb_error": 0.153
-    },
-    {
-      "file": "Hand.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        48,
-        20
-      ],
-      "mean_rgb_error": 0.153
-    },
-    {
-      "file": "Hand.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        48,
-        20
-      ],
-      "mean_rgb_error": 0.152
-    },
-    {
-      "file": "Pin.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        12,
-        5
-      ],
-      "mean_rgb_error": 0.232
-    },
-    {
-      "file": "Pin.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        12,
-        5
-      ],
-      "mean_rgb_error": 0.22
-    },
-    {
-      "file": "Pin.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        15,
-        6
-      ],
-      "mean_rgb_error": 0.21
-    },
-    {
-      "file": "Pin.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        15,
-        6
-      ],
-      "mean_rgb_error": 0.203
-    },
-    {
-      "file": "Pin.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        18,
-        8
-      ],
-      "mean_rgb_error": 0.218
-    },
-    {
-      "file": "Pin.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        18,
-        8
-      ],
-      "mean_rgb_error": 0.212
-    },
-    {
-      "file": "Pin.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        10
-      ],
-      "mean_rgb_error": 0.211
-    },
-    {
-      "file": "Pin.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        10
-      ],
-      "mean_rgb_error": 0.21
-    },
-    {
-      "file": "Pin.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        36,
-        15
-      ],
-      "mean_rgb_error": 0.208
-    },
-    {
-      "file": "Pin.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        36,
-        15
-      ],
-      "mean_rgb_error": 0.209
-    },
-    {
-      "file": "Pin.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        48,
-        20
-      ],
-      "mean_rgb_error": 0.208
-    },
-    {
-      "file": "Pin.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        48,
-        20
-      ],
-      "mean_rgb_error": 0.207
-    },
-    {
-      "file": "Person.cur",
-      "size": 32,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        12,
-        5
-      ],
-      "mean_rgb_error": 0.229
-    },
-    {
-      "file": "Person.cur",
-      "size": 32,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        12,
-        5
-      ],
-      "mean_rgb_error": 0.22
-    },
-    {
-      "file": "Person.cur",
-      "size": 40,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        15,
-        6
-      ],
-      "mean_rgb_error": 0.214
-    },
-    {
-      "file": "Person.cur",
-      "size": 40,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        15,
-        6
-      ],
-      "mean_rgb_error": 0.205
-    },
-    {
-      "file": "Person.cur",
-      "size": 48,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        18,
-        8
-      ],
-      "mean_rgb_error": 0.218
-    },
-    {
-      "file": "Person.cur",
-      "size": 48,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        18,
-        8
-      ],
-      "mean_rgb_error": 0.213
-    },
-    {
-      "file": "Person.cur",
-      "size": 64,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        24,
-        10
-      ],
-      "mean_rgb_error": 0.208
-    },
-    {
-      "file": "Person.cur",
-      "size": 64,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        24,
-        10
-      ],
-      "mean_rgb_error": 0.205
-    },
-    {
-      "file": "Person.cur",
-      "size": 96,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        36,
-        15
-      ],
-      "mean_rgb_error": 0.204
-    },
-    {
-      "file": "Person.cur",
-      "size": 96,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        36,
-        15
-      ],
-      "mean_rgb_error": 0.204
-    },
-    {
-      "file": "Person.cur",
-      "size": 128,
-      "background": [
-        255,
-        255,
-        255
-      ],
-      "hotspot": [
-        48,
-        20
-      ],
-      "mean_rgb_error": 0.206
-    },
-    {
-      "file": "Person.cur",
-      "size": 128,
-      "background": [
-        26,
-        34,
-        46
-      ],
-      "hotspot": [
-        48,
-        20
-      ],
-      "mean_rgb_error": 0.204
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.161,
+      "worstPixelError": 1
     },
     {
       "file": "Arrow.ani",
-      "sizes_loaded": [
+      "sha256": "878606b78790ff75b8c24863651b28b41341ebc08e9698f47e0cb9f526f470fc",
+      "bytes": 2738536,
+      "sizes": [
         32,
         40,
         48,
         64,
-        96,
         128
       ],
-      "animation_changed_pixels_at64": 1117,
-      "hotspot_stable": true
+      "frames": 26,
+      "steps": 48,
+      "seconds": 3.2,
+      "windowsStepTableMatches": true,
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.203,
+      "worstPixelError": 1
     },
     {
-      "file": "Wait.ani",
-      "sizes_loaded": [
+      "file": "Help.cur",
+      "sha256": "fb0bc3a32287d34f88c83f3f3955aed063437719373164a86c044725ff3e90b9",
+      "bytes": 143382,
+      "sizes": [
         32,
         40,
         48,
@@ -2882,12 +109,69 @@
         96,
         128
       ],
-      "animation_changed_pixels_at64": 625,
-      "hotspot_stable": true
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.226,
+      "worstPixelError": 1
+    },
+    {
+      "file": "Help.ani",
+      "sha256": "e88691d1f8385507222a384f465896a897eb717c243ed660a0263909ce371016",
+      "bytes": 2422758,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        128
+      ],
+      "frames": 23,
+      "steps": 45,
+      "seconds": 3.2,
+      "windowsStepTableMatches": true,
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.293,
+      "worstPixelError": 1
+    },
+    {
+      "file": "AppStarting.cur",
+      "sha256": "c8d2c7e0a25c32373bbb6cee64119f6e8f788132d4622e4dde9232e21b643cb0",
+      "bytes": 143382,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.239,
+      "worstPixelError": 1
     },
     {
       "file": "AppStarting.ani",
-      "sizes_loaded": [
+      "sha256": "40ca73887a680318889ead3868c665ff156765c2a0a7140c0f1b3511959d1a88",
+      "bytes": 3791516,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        128
+      ],
+      "frames": 36,
+      "steps": 36,
+      "seconds": 1.2,
+      "windowsStepTableMatches": true,
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.24,
+      "worstPixelError": 1
+    },
+    {
+      "file": "Wait.cur",
+      "sha256": "42261ffba9e67ecbd4e37764b474e48e7fbaae61191f8b91fea31702ab2f2f10",
+      "bytes": 143382,
+      "sizes": [
         32,
         40,
         48,
@@ -2895,8 +179,313 @@
         96,
         128
       ],
-      "animation_changed_pixels_at64": 237,
-      "hotspot_stable": true
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.228,
+      "worstPixelError": 1
+    },
+    {
+      "file": "Wait.ani",
+      "sha256": "1d86eb2a0a780b1da4aa11a3fc3293a68fe83e9c1b3d825f858914add6da1bef",
+      "bytes": 3791516,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        128
+      ],
+      "frames": 36,
+      "steps": 36,
+      "seconds": 1.2,
+      "windowsStepTableMatches": true,
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.229,
+      "worstPixelError": 1
+    },
+    {
+      "file": "Crosshair.cur",
+      "sha256": "7be71d0a5db51d710799fce4157215de1635726f9f40859a8e4b3b6ade7fd354",
+      "bytes": 143382,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.23,
+      "worstPixelError": 1
+    },
+    {
+      "file": "IBeam.cur",
+      "sha256": "05678c96bdb4c814592ab0e825ea4eadbde17b02aa43b2f094bfe110a344e00f",
+      "bytes": 143382,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.172,
+      "worstPixelError": 1
+    },
+    {
+      "file": "NWPen.cur",
+      "sha256": "7a8f5adea5b7983b9dbde4164720225ef35af54960fe959abae074b09cc52e65",
+      "bytes": 143382,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.141,
+      "worstPixelError": 1
+    },
+    {
+      "file": "No.cur",
+      "sha256": "8aeac90b155c000764a94f320eb4a616b828d2b3884eaefaf75301317155bd61",
+      "bytes": 143382,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.261,
+      "worstPixelError": 1
+    },
+    {
+      "file": "No.ani",
+      "sha256": "aa384b33bdb6a9ac774228cd8e5cac9ad3c51f6103100538fa31d68bd36bb811",
+      "bytes": 1790634,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        128
+      ],
+      "frames": 17,
+      "steps": 18,
+      "seconds": 3.2,
+      "windowsStepTableMatches": true,
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.31,
+      "worstPixelError": 1
+    },
+    {
+      "file": "SizeNS.cur",
+      "sha256": "68d145d901991d13b53382ee874063362c74d217839500adf0c8ccb99c90217d",
+      "bytes": 143382,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.13,
+      "worstPixelError": 1
+    },
+    {
+      "file": "SizeWE.cur",
+      "sha256": "69a267d10830e1991ee71a3b1c1009685d9d2718087a421dd4619263b4be513a",
+      "bytes": 143382,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.13,
+      "worstPixelError": 1
+    },
+    {
+      "file": "SizeNWSE.cur",
+      "sha256": "da9aa19409612a22bd1383f6ecb0121fb02a1218db5b9f8928640fc65d21c5cf",
+      "bytes": 143382,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.133,
+      "worstPixelError": 1
+    },
+    {
+      "file": "SizeNESW.cur",
+      "sha256": "9b547c7c5e2776247b6109aae202e98a23f708fba301e982357add7d871729af",
+      "bytes": 143382,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.134,
+      "worstPixelError": 1
+    },
+    {
+      "file": "SizeAll.cur",
+      "sha256": "1e2b671f889a60be552b564536e53e92aa9d675d0e543244502af14f9258a0c4",
+      "bytes": 143382,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.206,
+      "worstPixelError": 1
+    },
+    {
+      "file": "UpArrow.cur",
+      "sha256": "853fb4c01e07fec8924dc4aca4cf72e5593a1db531bbbcdff82932aafac218ec",
+      "bytes": 143382,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.168,
+      "worstPixelError": 1
+    },
+    {
+      "file": "Hand.cur",
+      "sha256": "cf1588124d0fd289ef840d51d11d37bac2ec3470b9e7fbfeb78f0ec4e301e352",
+      "bytes": 143382,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.174,
+      "worstPixelError": 1
+    },
+    {
+      "file": "Hand.ani",
+      "sha256": "ba6fc00c05652bfbf9fa50b09c8fa0ce26b907109cc176e9aee356ddd9f79685",
+      "bytes": 2528092,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        128
+      ],
+      "frames": 24,
+      "steps": 47,
+      "seconds": 3.2,
+      "windowsStepTableMatches": true,
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.231,
+      "worstPixelError": 1
+    },
+    {
+      "file": "Pin.cur",
+      "sha256": "9424bc541fdd7ad54999984d49f8d3e63120a980cc65a1de37811f5b1bda0818",
+      "bytes": 143382,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.232,
+      "worstPixelError": 1
+    },
+    {
+      "file": "Pin.ani",
+      "sha256": "b81e93de9b50764ccfd85de5c22c081389b88ae542bde66a87f829a011335a4f",
+      "bytes": 2528092,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        128
+      ],
+      "frames": 24,
+      "steps": 47,
+      "seconds": 3.2,
+      "windowsStepTableMatches": true,
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.298,
+      "worstPixelError": 1
+    },
+    {
+      "file": "Person.cur",
+      "sha256": "64570cf3c45e55cbcd6fdabfc4db888792120190d0430685af7d054e98d25683",
+      "bytes": 143382,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        96,
+        128
+      ],
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.229,
+      "worstPixelError": 1
+    },
+    {
+      "file": "Person.ani",
+      "sha256": "91864a877039cf71c1178f0cc803869b0bffb34080b71140ce8fc99ca4efcf41",
+      "bytes": 2528092,
+      "sizes": [
+        32,
+        40,
+        48,
+        64,
+        128
+      ],
+      "frames": 24,
+      "steps": 47,
+      "seconds": 3.2,
+      "windowsStepTableMatches": true,
+      "hotspotsMatchManifest": true,
+      "worstMeanRgbError": 0.3,
+      "worstPixelError": 1
     }
-  ]
+  ],
+  "failures": []
 }

@@ -1,0 +1,12 @@
+# Windows scripts are checked out with CRLF line endings.
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.cs  text eol=crlf
+
+# Cursor artwork and binaries: never diff or normalise.
+*.cur binary
+*.ani binary
+*.ico binary
+*.exe binary
+*.png binary
+*.gif binary

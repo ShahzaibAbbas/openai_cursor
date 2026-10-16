@@ -6,20 +6,43 @@ Installs the persistent Soft Black Arrow scheme for the current Windows user.
 Copies all cursor files and the small event-driven helper into a permanent folder.
 The first registry backup is preserved across reinstalls. The -Restore switch is
 used by Restore.ps1. Current cursor size, base size, and color are never changed.
+.PARAMETER Style
+Lively (default for a first install): eight animated pointers.
+Classic: the v3 set, with only Normal, Busy and Working animated.
+Static: no animation.
+When omitted on a reinstall, the style chosen earlier (also from the tray menu) is kept.
+.PARAMETER Static
+Same as -Style Static. Kept for Install-Static.ps1.
+.EXAMPLE
+.\Install.ps1 -Style Classic
 #>
 [CmdletBinding()]
-param([switch]$Restore)
+param(
+    [ValidateSet('Lively', 'Classic', 'Static')]
+    [string]$Style,
+    [switch]$Static,
+    [switch]$Restore
+)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+if ($Static) {
+    if ($Style -and $Style -ne 'Static') { throw ('-Static cannot be combined with -Style ' + $Style + '.') }
+    $Style = 'Static'
+}
+if ($Restore -and $Style) { throw '-Restore does not take a style.' }
 $schemeName = 'Soft Black Arrow Persistent'
 $runName = 'SoftBlackArrowCursorKeeper'
 $runPath = 'Software\Microsoft\Windows\CurrentVersion\Run'
 $installRoot = [IO.Path]::GetFullPath((Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'CustomCursors\SoftBlackArrowPermanent'))
 $helperPath = Join-Path $installRoot 'CursorKeeper.exe'
+$packageHelperPath = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot 'CursorKeeper.exe'))
 $backupPath = Join-Path $installRoot 'original-state.clixml'
+$configPath = Join-Path $installRoot 'keeper.ini'
 $sid = [Security.Principal.WindowsIdentity]::GetCurrent().User.Value
 $roleNames = @('Arrow', 'Help', 'AppStarting', 'Wait', 'Crosshair', 'IBeam', 'NWPen', 'No', 'SizeNS', 'SizeWE', 'SizeNWSE', 'SizeNESW', 'SizeAll', 'UpArrow', 'Hand', 'Pin', 'Person')
+# Every role ships a static .cur; these also ship an animated .ani (Lively uses all of them, Classic the first three).
+$animatedRoles = @('Arrow', 'Wait', 'AppStarting', 'Help', 'Hand', 'Pin', 'Person', 'No')
 $targets = @(
     foreach ($name in ($roleNames + @('', 'Scheme Source'))) {
         [pscustomobject]@{ Path = 'Control Panel\Cursors'; Name = $name }
@@ -62,9 +85,10 @@ function Assert-Snapshot {
     }
     if (@($Snapshot.Records).Count -ne $targets.Count) { throw 'The cursor backup contains an unexpected number of values.' }
     foreach ($target in $targets) {
-        $matches = @($Snapshot.Records | Where-Object { $_.Path -ceq $target.Path -and $_.Name -ceq $target.Name })
-        if ($matches.Count -ne 1) { throw ('Missing or duplicated backup value: ' + $target.Path + '\' + $target.Name) }
-        $record = $matches[0]
+        # Not $matches: that name is PowerShell's automatic regex-capture variable.
+        $found = @($Snapshot.Records | Where-Object { $_.Path -ceq $target.Path -and $_.Name -ceq $target.Name })
+        if ($found.Count -ne 1) { throw ('Missing or duplicated backup value: ' + $target.Path + '\' + $target.Name) }
+        $record = $found[0]
         if ($record.Exists -isnot [bool]) { throw 'Invalid backup existence flag.' }
         if ($record.Exists -and $record.Kind -notin @('String', 'ExpandString', 'MultiString', 'Binary', 'None', 'DWord', 'QWord')) {
             throw 'Unsupported registry type in the cursor backup.'
@@ -143,13 +167,53 @@ namespace SoftBlackArrowPersistent {
 }
 
 function Get-InstalledHelperProcesses {
+    # The installed helper, plus a copy started from this package folder: both hold the
+    # same per-user monitor mutex and both obey the --stop signal.
     foreach ($process in [Diagnostics.Process]::GetProcessesByName('CursorKeeper')) {
         try {
-            if ([IO.Path]::GetFullPath($process.MainModule.FileName) -ieq $helperPath) { $process }
+            $path = [IO.Path]::GetFullPath($process.MainModule.FileName)
+            if ($path -ieq $helperPath -or $path -ieq $packageHelperPath) { $process }
             else { $process.Dispose() }
         }
         catch { $process.Dispose() }
     }
+}
+
+function Invoke-HelperCommand {
+    param([string]$Argument, [int]$TimeoutMs, [string]$What)
+    $process = Start-Process -FilePath $helperPath -ArgumentList $Argument -WindowStyle Hidden -PassThru
+    try {
+        if (-not $process.WaitForExit($TimeoutMs)) {
+            # This is the one-shot process launched by this installation.
+            # End it before rollback so a late write cannot undo recovery.
+            $process.Kill()
+            [void]$process.WaitForExit(5000)
+            throw ($What + ' timed out.')
+        }
+        if ($process.ExitCode -ne 0) { throw ($What + ' failed, exit code ' + $process.ExitCode + '. See keeper.log in ' + $installRoot) }
+    }
+    finally { $process.Dispose() }
+}
+
+function Read-KeeperSetting {
+    param([string]$Name)
+    if (-not [IO.File]::Exists($configPath)) { return $null }
+    foreach ($line in [IO.File]::ReadAllLines($configPath)) {
+        if ($line -match ('^\s*' + $Name + '\s*=\s*(\S+)\s*$')) { return $Matches[1] }
+    }
+    return $null
+}
+
+function Write-KeeperConfig {
+    param([string]$ChosenStyle)
+    $follow = Read-KeeperSetting 'followWindowsAnimations'
+    if ($follow -notin @('true', 'false', '0', '1')) { $follow = 'true' }
+    $text = "# Soft Black Arrow cursor keeper settings`r`n" +
+        "# style: Lively (8 animated pointers), Classic (Normal, Busy, Working), Static (none)`r`n" +
+        "style=$ChosenStyle`r`n" +
+        "# true: use Static while Windows 'Animation effects' is turned off`r`n" +
+        "followWindowsAnimations=$follow`r`n"
+    [IO.File]::WriteAllText($configPath, $text, [Text.UTF8Encoding]::new($false))
 }
 
 function Stop-InstalledHelper {
@@ -170,7 +234,12 @@ function Stop-InstalledHelper {
 function Start-InstalledHelper {
     $process = Start-Process -FilePath $helperPath -WindowStyle Hidden -PassThru
     try {
-        if ($process.WaitForExit(1500)) { throw ('The cursor protection helper exited early: ' + $process.ExitCode) }
+        if ($process.WaitForExit(1500)) {
+            if ($process.ExitCode -eq 0) {
+                throw 'Another CursorKeeper monitor is already running for this user, probably from a different folder. Choose "Stop protection" in its tray menu, then run the installer again.'
+            }
+            throw ('The cursor protection helper exited early: ' + $process.ExitCode + '. See keeper.log in ' + $installRoot)
+        }
     }
     finally { $process.Dispose() }
 }
@@ -188,13 +257,7 @@ try {
         Assert-Snapshot $savedSnapshot
     }
     else {
-        $cursorFiles = @(
-            foreach ($role in $roleNames) {
-                if ($role -in @('Arrow', 'Wait', 'AppStarting')) { $role + '.ani' }
-                else { $role + '.cur' }
-            }
-            'Arrow.cur'
-        )
+        $cursorFiles = @(foreach ($role in $roleNames) { $role + '.cur' }) + @(foreach ($role in $animatedRoles) { $role + '.ani' })
         $requiredFiles = @($cursorFiles) + @('CursorKeeper.exe', 'Install.ps1', 'Restore.ps1', 'Stop-Protection.ps1')
         foreach ($file in $requiredFiles) {
             $source = Join-Path $PSScriptRoot $file
@@ -217,6 +280,8 @@ try {
     }
 
     $beforeChange = Get-RegistrySnapshot
+    $configBefore = $null
+    if ([IO.File]::Exists($configPath)) { $configBefore = [IO.File]::ReadAllBytes($configPath) }
     $runningBefore = @(Get-InstalledHelperProcesses)
     $wasRunning = $runningBefore.Count -gt 0
     foreach ($process in $runningBefore) { $process.Dispose() }
@@ -231,7 +296,8 @@ try {
         }
         else {
             $copyFiles = @($requiredFiles)
-            foreach ($optional in @('CursorKeeper.cs', 'README.txt', 'README.md', 'scheme-preview.png', 'effects-preview.gif', 'cursor-manifest.json')) {
+            foreach ($optional in @('CursorKeeper.cs', 'Install-Static.ps1', 'Install.cmd', 'Restore.cmd', 'Stop-Protection.cmd', 'README.md', 'CHANGELOG.md',
+                    'scheme-preview.png', 'effects-preview.gif', 'lively-preview.gif', 'cursor-manifest.json')) {
                 if ([IO.File]::Exists((Join-Path $PSScriptRoot $optional))) { $copyFiles += $optional }
             }
             foreach ($file in $copyFiles) {
@@ -244,23 +310,26 @@ try {
                     throw ('Copied file verification failed: ' + $file)
                 }
             }
+            # Keep the style chosen earlier (installer or tray menu) unless -Style was given.
+            $chosenStyle = $Style
+            if (-not $chosenStyle) { $chosenStyle = Read-KeeperSetting 'style' }
+            $chosenStyle = @('Lively', 'Classic', 'Static') | Where-Object { $_ -eq $chosenStyle } | Select-Object -First 1
+            if (-not $chosenStyle) { $chosenStyle = 'Lively' }
+            Write-KeeperConfig $chosenStyle
+            # Pre-flight: Windows must load every asset before anything is switched over.
+            Invoke-HelperCommand '--check' 30000 'Checking the cursor files'
             $runKey = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey($runPath)
             try { $runKey.SetValue($runName, ('"' + $helperPath + '"'), [Microsoft.Win32.RegistryValueKind]::String); $runKey.Flush() }
             finally { $runKey.Dispose() }
-            $apply = Start-Process -FilePath $helperPath -ArgumentList '--apply' -WindowStyle Hidden -PassThru
-            try {
-                if (-not $apply.WaitForExit(30000)) {
-                    # This is the one-shot process launched by this installation.
-                    # End it before rollback so a late write cannot undo recovery.
-                    $apply.Kill()
-                    [void]$apply.WaitForExit(5000)
-                    throw 'Applying the permanent cursor scheme timed out.'
-                }
-                if ($apply.ExitCode -ne 0) { throw ('Applying the permanent cursor scheme failed, exit code ' + $apply.ExitCode + '. See keeper.log in ' + $installRoot) }
-            }
-            finally { $apply.Dispose() }
+            Invoke-HelperCommand '--apply' 30000 'Applying the permanent cursor scheme'
             Start-InstalledHelper
+            $applied = $chosenStyle
+            try { $applied = (Get-Content -LiteralPath (Join-Path $installRoot 'state.json') -Raw | ConvertFrom-Json).style } catch { }
             Write-Host 'Soft Black Arrow Persistent is installed, applied, and protected at sign-in and after size changes.'
+            if ($applied -ne $chosenStyle) {
+                Write-Host ('Style: ' + $chosenStyle + ' (showing ' + $applied + ' while Windows animation effects are turned off)')
+            }
+            else { Write-Host ('Style: ' + $chosenStyle + '. Change it any time from the tray icon > Animation.') }
             Write-Host ('Permanent cursor folder: ' + $installRoot)
             Write-Host ('Original backup: ' + $backupPath)
         }
@@ -269,6 +338,10 @@ try {
         $failure = $_.Exception.Message
         try {
             Stop-InstalledHelper
+            if (-not $Restore) {
+                if ($null -ne $configBefore) { [IO.File]::WriteAllBytes($configPath, $configBefore) }
+                elseif ([IO.File]::Exists($configPath)) { [IO.File]::Delete($configPath) }
+            }
             Set-RegistrySnapshot $beforeChange
             Assert-SnapshotApplied $beforeChange
             Reload-Cursors

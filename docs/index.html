@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soft Black Arrow</title>
+<meta name="description" content="A soft black Windows cursor scheme with a transparent blue glow, 17 cursor roles and gentle animations. Try every pointer live in your browser.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="sprites/Arrow.png">
+<style>
+:root {
+  --bg: #f3f5f9;
+  --surface: #ffffff;
+  --surface-2: #eef1f6;
+  --ink: #141a24;
+  --ink-2: #4a5568;
+  --ink-3: #6b7686;
+  --line: #dde2ea;
+  --accent: #3d7bd8;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3edfb;
+  --well-light: #f5f7fb;
+  --well-dark: #1a222e;
+  --window: #ffffff;
+  --window-bar: #f0f3f8;
+  --shadow: 0 1px 2px rgba(20, 26, 36, .06), 0 8px 24px rgba(20, 26, 36, .06);
+  --radius: 14px;
+  --font: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --mono: "Cascadia Code", Consolas, ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10151d;
+    --surface: #171e29;
+    --surface-2: #1d2532;
+    --ink: #e8edf4;
+    --ink-2: #b2bccb;
+    --ink-3: #8a96a8;
+    --line: #2a3445;
+    --accent: #6aa3f0;
+    --accent-ink: #0d1420;
+    --accent-soft: #1d2d45;
+    --window: #1b2330;
+    --window-bar: #222b3a;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 28px rgba(0, 0, 0, .28);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10151d;
+  --surface: #171e29;
+  --surface-2: #1d2532;
+  --ink: #e8edf4;
+  --ink-2: #b2bccb;
+  --ink-3: #8a96a8;
+  --line: #2a3445;
+  --accent: #6aa3f0;
+  --accent-ink: #0d1420;
+  --accent-soft: #1d2d45;
+  --window: #1b2330;
+  --window-bar: #222b3a;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 28px rgba(0, 0, 0, .28);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.55 var(--font);
+}
+a { color: var(--accent); }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+header.hero { padding: 48px 0 28px; }
+.eyebrow { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.1; margin: 8px 0 12px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 0 0 6px; }
+h3 { font-size: 15px; margin: 0; }
+.lede { font-size: 17px; color: var(--ink-2); max-width: 680px; margin: 0; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 16px;
+  border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  font: 600 14px/1 var(--font); text-decoration: none;
+}
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Controls */
+.controls {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center;
+  padding: 12px 16px; margin: 0 -16px 22px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.control { display: flex; align-items: center; gap: 8px; }
+.control > span { font-size: 13px; color: var(--ink-3); font-weight: 600; }
+.seg { display: inline-flex; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
+.seg button {
+  border: 0; background: transparent; color: var(--ink-2); font: 600 13px/1 var(--font);
+  padding: 8px 11px; border-radius: 7px; cursor: pointer; min-height: 32px;
+}
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.toggle { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 10px; padding: 8px 12px; font: 600 13px/1 var(--font); min-height: 38px; cursor: pointer; }
+.note { font-size: 13px; color: var(--ink-3); margin: 0 0 18px; }
+.note[hidden] { display: none; }
+
+section { margin: 0 0 44px; }
+.section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin-bottom: 14px; }
+.section-head p { margin: 0; color: var(--ink-2); }
+
+/* Test drive */
+.stage {
+  position: relative; border-radius: var(--radius); padding: clamp(14px, 3vw, 34px);
+  background: radial-gradient(1200px 400px at 10% 0%, #7fa7e6 0%, transparent 60%), linear-gradient(135deg, #5c7fb8, #34507e 55%, #23324f);
+  box-shadow: var(--shadow);
+}
+.stage.light-desk { background: linear-gradient(135deg, #dfe8f6, #f7f9fc); }
+.win {
+  position: relative; background: var(--window); color: var(--ink); border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.12); box-shadow: 0 18px 50px rgba(0,0,0,.3); overflow: hidden;
+  max-width: 900px; margin: 0 auto;
+}
+.edge { position: absolute; z-index: 2; }
+.edge.n, .edge.s { left: 10px; right: 10px; height: 7px; }
+.edge.n { top: 0; } .edge.s { bottom: 0; }
+.edge.e, .edge.w { top: 10px; bottom: 10px; width: 7px; }
+.edge.e { right: 0; } .edge.w { left: 0; }
+.edge.nw, .edge.ne, .edge.sw, .edge.se { width: 12px; height: 12px; }
+.edge.nw { top: 0; left: 0; } .edge.ne { top: 0; right: 0; } .edge.sw { bottom: 0; left: 0; } .edge.se { bottom: 0; right: 0; }
+.titlebar { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 0 0 14px; background: var(--window-bar); border-bottom: 1px solid var(--line); font-size: 13px; user-select: none; }
+.titlebar .grip { flex: 1; align-self: stretch; display: flex; align-items: center; color: var(--ink-2); }
+.wbtns { display: flex; align-self: stretch; }
+.wbtns span { width: 44px; display: grid; place-items: center; color: var(--ink-2); font-size: 14px; }
+.wbtns span:last-child:hover { background: #c42b1c; color: #fff; }
+.winbody { display: grid; grid-template-columns: 1.1fr 1fr; gap: 18px; padding: 18px; }
+@media (max-width: 760px) { .winbody { grid-template-columns: 1fr; } }
+.field { display: grid; gap: 6px; font-size: 13px; color: var(--ink-2); }
+.field input { font: 15px var(--font); padding: 9px 11px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); width: 100%; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chipbtn { border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); border-radius: 8px; padding: 8px 12px; font: 600 13px var(--font); }
+.chipbtn[disabled] { opacity: .5; }
+.chipbtn.round { width: 36px; height: 36px; border-radius: 50%; padding: 0; }
+.tile { border: 1px solid var(--line); border-radius: 10px; padding: 12px; background: var(--surface-2); font-size: 13px; color: var(--ink-2); }
+.tile strong { color: var(--ink); display: block; font-size: 14px; margin-bottom: 4px; }
+.map {
+  height: 110px; border-radius: 8px; position: relative; overflow: hidden;
+  background:
+    linear-gradient(90deg, transparent 47%, rgba(255,255,255,.75) 47% 53%, transparent 53%),
+    linear-gradient(0deg, transparent 60%, rgba(255,255,255,.6) 60% 66%, transparent 66%),
+    linear-gradient(135deg, #cfe3c9, #b9d7ec);
+}
+.map i { position: absolute; left: 58%; top: 26%; width: 18px; height: 18px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: #4b8fe6; box-shadow: 0 0 0 3px #fff; }
+.person { display: flex; align-items: center; gap: 10px; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #6aa3f0, #3d7bd8); color: #fff; display: grid; place-items: center; font-weight: 700; }
+.pad { height: 110px; border-radius: 8px; background: var(--surface); border: 1px dashed var(--line); touch-action: none; display: block; width: 100%; }
+.swatches { display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px; border-radius: 8px; overflow: hidden; }
+.swatches div { aspect-ratio: 1; }
+.busy { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.progress { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; flex: 1; }
+.progress b { display: block; height: 100%; width: 40%; background: var(--accent); border-radius: 3px; animation: slide 1.6s ease-in-out infinite; }
+@keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(260%); } }
+.status {
+  display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; justify-content: center;
+  margin: 14px auto 0; max-width: 900px; padding: 9px 14px; border-radius: 10px;
+  background: rgba(10, 16, 26, .55); color: #e9eef6; font-size: 13px; min-height: 38px;
+}
+.stage.light-desk .status { background: rgba(255,255,255,.75); color: var(--ink); }
+.status code { font-family: var(--mono); font-size: 12px; opacity: .85; }
+.pill { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .03em; padding: 2px 7px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
+.status .pill { background: rgba(106,163,240,.22); color: #cfe0fa; }
+.stage.light-desk .status .pill { background: var(--accent-soft); color: var(--accent); }
+
+/* Live cursor: the native pointer is hidden only where a drawn one replaces it. */
+.live, .live * { cursor: none !important; }
+#pointer { position: fixed; left: 0; top: 0; pointer-events: none; z-index: 50; display: none; will-change: transform; }
+
+/* Gallery */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; box-shadow: var(--shadow); }
+.card-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
+.wells { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.well { border-radius: 9px; height: 112px; display: grid; place-items: center; }
+.well.light { background: var(--well-light); border: 1px solid var(--line); }
+.well.dark { background: var(--well-dark); }
+.well canvas { display: block; }
+.card-foot { margin-top: 9px; font-size: 12.5px; color: var(--ink-3); min-height: 38px; }
+.card-foot code { font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+
+/* Install */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; counter-reset: s; }
+.step { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; position: relative; }
+.step::before { counter-increment: s; content: counter(s); position: absolute; top: 14px; right: 16px; font-weight: 800; color: var(--accent); opacity: .5; font-size: 22px; }
+.step p { margin: 6px 0 0; color: var(--ink-2); font-size: 14px; }
+pre { margin: 10px 0 0; padding: 10px 12px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 9px; overflow-x: auto; font: 12.5px/1.5 var(--mono); color: var(--ink); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .05em; background: var(--surface-2); }
+tr:last-child td { border-bottom: 0; }
+.table-scroll { overflow-x: auto; border-radius: var(--radius); }
+footer { padding: 26px 0 40px; color: var(--ink-3); font-size: 13px; border-top: 1px solid var(--line); }
+@media (max-width: 640px) { .controls { position: static; } }
+@media (max-width: 520px) {
+  .controls { gap: 8px 12px; }
+  .seg button { padding: 8px 8px; }
+  .well { height: 96px; }
+}
+</style>
+</head>
+<body>
+<canvas id="pointer" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Windows cursor scheme · v4</div>
+    <h1>Soft Black Arrow</h1>
+    <p class="lede">Smooth black contours, a thin white edge and a transparent blue glow, across all 17 Windows pointer roles. Eight of them now breathe, hop and shake. Move your mouse over the window below to try each one.</p>
+    <div class="actions">
+      <a class="btn primary" href="https://github.com/ShahzaibAbbas/openai_cursor/archive/refs/heads/main.zip">Download ZIP</a>
+      <a class="btn" href="https://github.com/ShahzaibAbbas/openai_cursor">Source on GitHub</a>
+      <a class="btn" href="#install">How to install</a>
+    </div>
+  </header>
+
+  <div class="controls" role="toolbar" aria-label="Preview settings">
+    <div class="control"><span id="lbl-style">Style</span>
+      <div class="seg" role="group" aria-labelledby="lbl-style" data-group="style">
+        <button type="button" data-value="Lively" aria-pressed="true">Lively</button>
+        <button type="button" data-value="Classic" aria-pressed="false">Classic</button>
+        <button type="button" data-value="Static" aria-pressed="false">Static</button>
+      </div>
+    </div>
+    <div class="control"><span id="lbl-size">Size</span>
+      <div class="seg" role="group" aria-labelledby="lbl-size" data-group="size">
+        <button type="button" data-value="32" aria-pressed="true">32</button>
+        <button type="button" data-value="48" aria-pressed="false">48</button>
+        <button type="button" data-value="64" aria-pressed="false">64</button>
+        <button type="button" data-value="96" aria-pressed="false">96</button>
+        <button type="button" data-value="128" aria-pressed="false">128</button>
+      </div>
+    </div>
+    <div class="control"><span id="lbl-desk">Desktop</span>
+      <div class="seg" role="group" aria-labelledby="lbl-desk" data-group="desk">
+        <button type="button" data-value="dark" aria-pressed="true">Blue</button>
+        <button type="button" data-value="light" aria-pressed="false">Light</button>
+      </div>
+    </div>
+    <button type="button" class="toggle" id="play" aria-pressed="true">Pause animation</button>
+  </div>
+  <p class="note" id="motion-note" hidden>Your system asks for reduced motion, so animation starts paused. Press Play to preview it. With the default setting, the installed scheme follows the Windows "Animation effects" switch the same way.</p>
+
+  <section aria-labelledby="h-drive">
+    <div class="section-head">
+      <h2 id="h-drive">Test drive</h2>
+      <p>Each area of this window uses the pointer Windows would show there.</p>
+    </div>
+    <div class="stage live" id="stage" data-cursor="Arrow">
+      <div class="win" data-cursor="Arrow">
+        <div class="edge n" data-cursor="SizeNS"></div><div class="edge s" data-cursor="SizeNS"></div>
+        <div class="edge e" data-cursor="SizeWE"></div><div class="edge w" data-cursor="SizeWE"></div>
+        <div class="edge nw" data-cursor="SizeNWSE"></div><div class="edge se" data-cursor="SizeNWSE"></div>
+        <div class="edge ne" data-cursor="SizeNESW"></div><div class="edge sw" data-cursor="SizeNESW"></div>
+        <div class="titlebar">
+          <div class="grip" data-cursor="SizeAll">Notes: drag here to move</div>
+          <div class="wbtns" aria-hidden="true"><span>&#8212;</span><span>&#9744;</span><span>&#10005;</span></div>
+        </div>
+        <div class="winbody">
+          <div style="display:grid; gap:14px; align-content:start">
+            <label class="field" data-cursor="IBeam">Title
+              <input type="text" value="Weekend trip ideas" aria-label="Title">
+            </label>
+            <p style="margin:0; font-size:14px; color:var(--ink-2)">Check the <a href="#gallery" data-cursor="Hand">pointer gallery</a> for every role, or read <a href="#install" data-cursor="Hand">how to install</a>.</p>
+            <div class="row">
+              <button type="button" class="chipbtn round" data-cursor="Help" aria-label="Help">?</button>
+              <span data-cursor="No" style="display:inline-flex"><button type="button" class="chipbtn" disabled style="pointer-events:none">Delete (locked)</button></span>
+              <button type="button" class="chipbtn" data-cursor="UpArrow">Back to top</button>
+            </div>
+            <div class="tile busy" data-cursor="AppStarting">
+              <div><strong>Syncing in the background</strong>You can keep working.</div>
+              <div class="progress" aria-hidden="true"><b></b></div>
+            </div>
+            <div class="tile" data-cursor="Wait"><strong>Exporting…</strong>This window is busy for a moment.</div>
+          </div>
+          <div style="display:grid; gap:14px; align-content:start">
+            <div class="tile"><strong>Meeting point</strong><div class="map" data-cursor="Pin"><i></i></div></div>
+            <div class="tile person" data-cursor="Person"><div class="avatar">AK</div><div><strong style="margin:0">Alex Kim</strong>Share this note</div></div>
+            <div class="tile"><strong>Sketch</strong><canvas class="pad" id="pad" data-cursor="NWPen" aria-label="Sketch pad: draw with the pen pointer"></canvas></div>
+            <div class="tile"><strong>Pick a colour <span id="picked" style="font-weight:400; color:var(--ink-3)"></span></strong><div class="swatches" id="swatches" data-cursor="Crosshair"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="status" id="status" aria-live="polite">Move the pointer over the window.</div>
+    </div>
+  </section>
+
+  <section id="gallery" aria-labelledby="h-gallery">
+    <div class="section-head">
+      <h2 id="h-gallery">All 17 pointers</h2>
+      <p>Hover a card to use that pointer. Every one is crisp from 32 to 128 px.</p>
+    </div>
+    <div class="grid live" id="grid"></div>
+  </section>
+
+  <section id="install" aria-labelledby="h-install">
+    <div class="section-head">
+      <h2 id="h-install">Install</h2>
+      <p>Current user only. No administrator rights and no system files are touched.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><h3>Download and extract</h3><p>Get the ZIP above and extract it anywhere. The installer copies everything it needs into a permanent folder.</p></div>
+      <div class="step"><h3>Double-click Install.cmd</h3><p>It applies the scheme, keeps your pointer size and colour, and starts the small tray helper that keeps the scheme in place after sign-in.</p><pre>Install.cmd Classic</pre></div>
+      <div class="step"><h3>Pick a style any time</h3><p>Right-click the tray icon, then <b>Animation</b>: Lively, Classic or Static. Or run it from a terminal:</p><pre>CursorKeeper.exe --style Static</pre></div>
+    </div>
+    <div style="height:14px"></div>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Style</th><th>Animated pointers</th><th>Use it when</th></tr></thead>
+      <tbody>
+        <tr><td><b>Lively</b> <span class="pill">default</span></td><td>Normal, Busy, Working, Help, Link, Location, Person, Unavailable</td><td>You like a pointer that feels alive. Every loop shares one 3.2 s rhythm.</td></tr>
+        <tr><td><b>Classic</b></td><td>Normal, Busy, Working</td><td>You want the original v3 behaviour.</td></tr>
+        <tr><td><b>Static</b></td><td>None</td><td>You prefer no motion. This style is also used automatically while Windows "Animation effects" is off.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note" style="margin-top:14px">To undo: <b>Stop-Protection.cmd</b> stops the helper and keeps the scheme. <b>Restore.cmd</b> puts back your exact previous pointers.</p>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">Soft Black Arrow · previews are drawn from the same artwork the .cur and .ani files contain. Browsers can't play Windows animated cursors, so this page draws the pointer itself.</div>
+</footer>
+
+<script src="cursors.js"></script>
+<script>
+(function () {
+  "use strict";
+  var DATA = window.SOFT_BLACK;
+  var JIFFY = 1000 / 60;
+  var SPRITE = DATA.spriteSize;
+  var roles = {};
+  var state = { style: "Lively", size: 32, playing: true, desk: "dark", hover: null, x: 0, y: 0 };
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) state.playing = false;
+
+  function load(src) {
+    var img = new Image();
+    img.decoding = "async";
+    img.src = src;
+    return img;
+  }
+
+  DATA.roles.forEach(function (r) {
+    r.still = load(r.image);
+    if (r.animation) {
+      r.sheet = load(r.animation.strip);
+      r.cycle = r.animation.steps.reduce(function (t, s) { return t + s[1]; }, 0) * JIFFY;
+    }
+    roles[r.role] = r;
+  });
+
+  function animates(r) {
+    if (!r.animation || !state.playing) return false;
+    if (state.style === "Lively") return r.lively;
+    if (state.style === "Classic") return r.classic;
+    return false;
+  }
+
+  // Frame index for the shared clock; every Lively loop is 3.2 s, so they stay in step.
+  function frameAt(r, now) {
+    var t = now % r.cycle, steps = r.animation.steps;
+    for (var i = 0; i < steps.length; i++) {
+      var d = steps[i][1] * JIFFY;
+      if (t < d) return steps[i][0];
+      t -= d;
+    }
+    return steps[0][0];
+  }
+
+  // Redraws only when the visible frame, size or image readiness changes.
+  function paint(ctx, r, now, px, dpr) {
+    var dev = Math.round(px * dpr);
+    var anim = animates(r) && r.sheet.complete && r.sheet.naturalWidth > 0;
+    var ready = anim || (r.still.complete && r.still.naturalWidth > 0);
+    var key = ready ? dev + ":" + (anim ? frameAt(r, now) : "s") : "";
+    if (ctx.key === key) return;
+    ctx.key = key;
+    if (ctx.canvas.width !== dev) {
+      ctx.canvas.width = dev; ctx.canvas.height = dev;
+      ctx.canvas.style.width = px + "px"; ctx.canvas.style.height = px + "px";
+    }
+    ctx.clearRect(0, 0, dev, dev);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    if (anim) ctx.drawImage(r.sheet, frameAt(r, now) * SPRITE, 0, SPRITE, SPRITE, 0, 0, dev, dev);
+    else if (ready) ctx.drawImage(r.still, 0, 0, dev, dev);
+  }
+
+  // ---- Gallery ----
+  var grid = document.getElementById("grid");
+  var cards = [];
+  DATA.roles.forEach(function (r) {
+    var card = document.createElement("article");
+    card.className = "card";
+    card.setAttribute("data-cursor", r.role);
+    var head = document.createElement("div");
+    head.className = "card-head";
+    var h = document.createElement("h3");
+    h.textContent = r.label;
+    var tag = document.createElement("span");
+    tag.className = "pill";
+    head.appendChild(h);
+    head.appendChild(tag);
+    var wells = document.createElement("div");
+    wells.className = "wells";
+    var canvases = ["light", "dark"].map(function (tone) {
+      var w = document.createElement("div");
+      w.className = "well " + tone;
+      var c = document.createElement("canvas");
+      c.setAttribute("role", "img");
+      c.setAttribute("aria-label", r.label + " pointer on a " + tone + " background");
+      w.appendChild(c);
+      wells.appendChild(w);
+      return c.getContext("2d");
+    });
+    var foot = document.createElement("div");
+    foot.className = "card-foot";
+    card.appendChild(head);
+    card.appendChild(wells);
+    card.appendChild(foot);
+    grid.appendChild(card);
+    cards.push({ role: r, ctx: canvases, tag: tag, foot: foot });
+  });
+
+  function describe(c) {
+    var r = c.role, live = r.animation && (state.style === "Lively" ? r.lively : state.style === "Classic" ? r.classic : false);
+    c.tag.textContent = live ? "animated" : "static";
+    c.tag.style.visibility = "visible";
+    var file = r.role + (live ? ".ani" : ".cur");
+    c.foot.innerHTML = "";
+    var code = document.createElement("code");
+    code.textContent = file;
+    c.foot.appendChild(code);
+    c.foot.appendChild(document.createTextNode(live && r.animation.effect ? " · " + r.animation.effect : ""));
+  }
+
+  // ---- Live pointer ----
+  var pointer = document.getElementById("pointer");
+  var pctx = pointer.getContext("2d");
+  var status = document.getElementById("status");
+  var lastRole = null;
+  if (window.matchMedia && window.matchMedia("(hover: none)").matches)
+    status.textContent = "The live pointer needs a mouse or trackpad. The gallery below animates on any screen.";
+
+  function setHover(roleName) {
+    state.hover = roleName;
+    if (!roleName) { pointer.style.display = "none"; return; }
+    pointer.style.display = "block";
+    if (roleName !== lastRole) {
+      lastRole = roleName;
+      var r = roles[roleName];
+      var live = animates(r);
+      status.innerHTML = "";
+      var b = document.createElement("b");
+      b.textContent = r.label;
+      var code = document.createElement("code");
+      code.textContent = r.role + (live ? ".ani" : ".cur");
+      var pill = document.createElement("span");
+      pill.className = "pill";
+      pill.textContent = live ? "animated" : "static";
+      status.appendChild(b);
+      status.appendChild(code);
+      status.appendChild(pill);
+    }
+  }
+
+  function placePointer() {
+    var r = roles[state.hover];
+    if (!r) return;
+    var scale = state.size / SPRITE;
+    pointer.style.width = state.size + "px";
+    pointer.style.height = state.size + "px";
+    pointer.style.transform = "translate(" + (state.x - r.hotspot[0] * scale) + "px," + (state.y - r.hotspot[1] * scale) + "px)";
+  }
+
+  document.querySelectorAll(".live").forEach(function (area) {
+    area.addEventListener("pointermove", function (e) {
+      if (e.pointerType === "touch") { setHover(null); return; }
+      var el = e.target.closest("[data-cursor]");
+      state.x = e.clientX; state.y = e.clientY;
+      setHover(el ? el.getAttribute("data-cursor") : null);
+      placePointer();
+    });
+    area.addEventListener("pointerleave", function () { setHover(null); });
+  });
+  window.addEventListener("scroll", function () { if (state.hover) setHover(null); }, { passive: true });
+
+  // ---- Small interactions in the test window ----
+  var pad = document.getElementById("pad");
+  var padCtx = pad.getContext("2d");
+  var drawing = false;
+  function padPoint(e) {
+    var b = pad.getBoundingClientRect();
+    return [(e.clientX - b.left) * (pad.width / b.width), (e.clientY - b.top) * (pad.height / b.height)];
+  }
+  function sizePad() {
+    var b = pad.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    pad.width = Math.round(b.width * dpr); pad.height = Math.round(b.height * dpr);
+  }
+  sizePad();
+  window.addEventListener("resize", sizePad);
+  pad.addEventListener("pointerdown", function (e) {
+    drawing = true; pad.setPointerCapture(e.pointerId);
+    var p = padPoint(e);
+    padCtx.beginPath(); padCtx.moveTo(p[0], p[1]);
+    padCtx.lineWidth = 2.5 * (window.devicePixelRatio || 1);
+    padCtx.lineCap = "round"; padCtx.lineJoin = "round";
+    padCtx.strokeStyle = getComputedStyle(document.body).color;
+  });
+  pad.addEventListener("pointermove", function (e) {
+    if (!drawing) return;
+    var p = padPoint(e);
+    padCtx.lineTo(p[0], p[1]); padCtx.stroke();
+  });
+  pad.addEventListener("pointerup", function () { drawing = false; });
+
+  var sw = document.getElementById("swatches"), picked = document.getElementById("picked");
+  for (var i = 0; i < 16; i++) {
+    var d = document.createElement("div");
+    var hue = Math.round(i * 22.5);
+    d.style.background = "hsl(" + hue + " 70% " + (i % 2 ? 58 : 46) + "%)";
+    d.setAttribute("data-cursor", "Crosshair");
+    d.addEventListener("click", (function (h) { return function () { picked.textContent = "· hue " + h + "°"; }; })(hue));
+    sw.appendChild(d);
+  }
+  document.querySelector('[data-cursor="UpArrow"]').addEventListener("click", function () { window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); });
+
+  // ---- Controls ----
+  function press(group, value) {
+    document.querySelectorAll('[data-group="' + group + '"] button').forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-value") === value));
+    });
+  }
+  document.querySelectorAll(".seg").forEach(function (seg) {
+    seg.addEventListener("click", function (e) {
+      var b = e.target.closest("button");
+      if (!b) return;
+      var group = seg.getAttribute("data-group"), value = b.getAttribute("data-value");
+      press(group, value);
+      if (group === "style") state.style = value;
+      if (group === "size") state.size = parseInt(value, 10);
+      if (group === "desk") {
+        state.desk = value;
+        document.getElementById("stage").classList.toggle("light-desk", value === "light");
+      }
+      lastRole = null;
+      cards.forEach(describe);
+      try { localStorage.setItem("sba-" + group, value); } catch (err) { }
+    });
+  });
+  var play = document.getElementById("play");
+  function syncPlay() {
+    play.setAttribute("aria-pressed", String(state.playing));
+    play.textContent = state.playing ? "Pause animation" : "Play animation";
+    lastRole = null;
+    cards.forEach(describe);
+  }
+  play.addEventListener("click", function () { state.playing = !state.playing; syncPlay(); });
+  document.getElementById("motion-note").hidden = !reduce;
+
+  // Remembered preferences (per browser; harmless when storage is unavailable).
+  ["style", "size", "desk"].forEach(function (group) {
+    var v = null;
+    try { v = localStorage.getItem("sba-" + group); } catch (err) { }
+    var btn = v && document.querySelector('[data-group="' + group + '"] button[data-value="' + v + '"]');
+    if (btn) btn.click();
+  });
+  syncPlay();
+
+  // ---- Render loop ----
+  function frame(now) {
+    var dpr = window.devicePixelRatio || 1;
+    var cardSize = Math.min(state.size, window.innerWidth < 520 ? 72 : 96);
+    for (var i = 0; i < cards.length; i++)
+      for (var k = 0; k < 2; k++) paint(cards[i].ctx[k], cards[i].role, now, cardSize, dpr);
+    if (state.hover) {
+      if (pctx.role !== state.hover) { pctx.role = state.hover; pctx.key = null; }
+      paint(pctx, roles[state.hover], now, state.size, dpr);
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
